@@ -1,21 +1,26 @@
 Meteor.Router.add({
-    '/': 'postsList',
-    '/posts/:_id': {
-        to: 'postPage',
-        and: function(id) { Session.set('currentPostId', id); }
+    "/": "postsList",
+    "/posts/:_id": {
+        to: "postPage",
+        and: function(id) { Session.set("currentPostId", id); }
     },
-    '/submit': 'postSubmit'
+    "/posts/:_id/edit": {
+        to: "postEdit",
+        and: function(id) { Session.set("currentPostId", id); }
+    },
+
+    "/submit": "postSubmit"
 });
 
 Meteor.Router.filters({
-    'requireLogin': function(page) {
+    "requireLogin": function(page) {
         if (Meteor.user())
             return page;
         else if (Meteor.loggingIn())
-            return 'loading';
+            return "loading";
         else
-            return 'accessDenied';
+            return "accessDenied";
     }
 });
 
-Meteor.Router.filter('requireLogin', {only: 'postSubmit'});
+Meteor.Router.filter("requireLogin", {only: "postSubmit"});
