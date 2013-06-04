@@ -9,7 +9,7 @@ Template.commentSubmit.events({
 
         Meteor.call("comment", comment, function(error, commentId) {
             $(event.target).find("[name=body]").val("");
-            error && Meteor.Error.throw(error.reason);
+            error && Meteor.Errors.throw(error.reason);
         });
     }
 });
