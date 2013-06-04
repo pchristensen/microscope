@@ -1,17 +1,52 @@
 if (Posts.find().count() === 0) {
-    Posts.insert({
+    var now = new Date().getTime();
+
+    var billId = Meteor.users.insert({
+        profile: { name: "Bill S. Preseton, Esq" }
+    });
+    var bill = Meteor.users.findOne(billId);
+
+    var tedId = Meteor.users.insert({
+        profile: { name: "Ted Theodore Logan" }
+    });
+    var ted = Meteor.users.findOne(tedId);
+
+    var telescopeId = Posts.insert({
         title : "Introducing Telescope",
-        author: "Sacha Greif",
+        userId: bill._id,
+        author: bill.profile.name,
         url   : "http://sachagreif.com/introducing-telescope/"
     });
+
+    Comments.insert({
+        postId: telescopeId,
+        userId: ted._id,
+        author: ted.profile.name,
+        submitted: now - 5 * 3600 * 1000,
+        body: "Intereting project Bill, can I get involved?"
+    });
+
+    Comments.insert({
+        postId: telescopeId,
+        userId: bill._id,
+        author: bill.profile.name,
+        submitted: now - 3 * 3600 * 1000,
+        body: "You sure can Ted. Excellent!"
+    });
+
     Posts.insert({
         title : "Meteor",
-        author: "Tom Coleman",
-        url   : "http://meteor.com"
+        userId: ted._id,
+        author: ted.profile.name,
+        url   : "http://meteor.com",
+        submitted: now - 10 * 3600 * 1000
     });
+
     Posts.insert({
         title : "The Meteor Book",
-        author: "Tom Coleman",
-        url   : "http://themeteorbook.com"
+        userId: ted._id,
+        author: ted.profile.name,
+        url   : "http://themeteorbook.com",
+        submited: now - 12 * 3600 * 1000
     });
 }
