@@ -52,4 +52,15 @@ if (Posts.find().count() === 0) {
         submited: now - 12 * 3600 * 1000,
         commentsCount: 0
     });
+
+    for (var i = 0; i < 10; i++) {
+        Posts.insert({
+            title: "Test post #" + i,
+            userId: ted._id,
+            author: ted.profile.name,
+            url: "http://google.com/?q=test-" + i,
+            submitted: now - i * 3600 * 100,
+            commentsCount: 0
+        });
+    }
 }
