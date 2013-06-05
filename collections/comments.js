@@ -6,13 +6,13 @@ Meteor.methods({
         var post = Posts.findOne(commentAttributes.postId);
 
         if (!user)
-            throw new Meteor.Error(401, "You need to login to make comments");
+            Meteor.Errors.throw("You need to login to make comments", 401);
 
         if (!commentAttributes.body)
-            throw new Meteor.Error(422, "Please write some content");
+            Meteor.Errors.throw("Please write some content", 422);
 
         if (!commentAttributes.postId)
-            throw new Meteor.Error(422, "You must comment on a post");
+            Meteor.Errors.throw("You must comment on a post", 422);
 
         var comment = _.extend(_.pick(commentAttributes, "postId", "body"), {
             userId: user._id,

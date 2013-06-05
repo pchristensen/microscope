@@ -18,13 +18,13 @@ Meteor.methods({
             postWithSameLink = Posts.findOne({url: postAttributes.url});
 
         if (!user)
-            throw new Meteor.Error(401, "You need to login to post new stories");
+            Meteor.Errors.throw("You need to login to post new stories", 401);
 
         if (!postAttributes.title)
-            throw new Meteor.Error(422, "Please fill in a headine");
+            Meteor.Errors.throw("Please fill in a headine", 422);
 
         if (postAttributes.url && postWithSameLink)
-            throw new Meteor.Error(302, "This link has already been posted", postWithSameLink._id);
+            Meteor.Errors.throw("This link has already been posted", postWithSameLink._id, 302);
 
         var post = _.extend(_.pick(postAttributes, 'url', 'title', 'message'), {
             userId: user._id,
