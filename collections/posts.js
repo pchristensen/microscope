@@ -30,10 +30,30 @@ Meteor.methods({
             userId: user._id,
             author: user.username,
             submitted: new Date().getTime(),
-            commentsCount: 0
+            commentsCount: 0,
+            upvoters: [],
+            votes: 0
         });
 
         var postId = Posts.insert(post);
         return postId;
+    },
+
+    upvote: function(postId) {
+        var user = Meteor.user();
+        if (!user)
+            Meteor.Errors.throw("You need to login to upvote", 401);
+
+        var post = Posts.findOne(postId);
+        if (!post)
+            Meteor.Errors.throw("Post not found", 422);
+
+        if (_.include(post.upvoters, user._id))
+            Meteor.Errors.throw("Already upvoted this post", 422);
+
+        Posts.update(post._id, {
+            $addToSet: { upvoters: user._id },
+            $inc: { votes: 1 }
+        });
     }
 });
