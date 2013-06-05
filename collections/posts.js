@@ -51,7 +51,10 @@ Meteor.methods({
         if (_.include(post.upvoters, user._id))
             Meteor.Errors.throw("Already upvoted this post", 422);
 
-        Posts.update(post._id, {
+        Posts.update({
+            _id: postId,
+            upvoters: { $ne: user._id }
+        }, {
             $addToSet: { upvoters: user._id },
             $inc: { votes: 1 }
         });
