@@ -45,11 +45,13 @@ Template.postItem.rendered = function() {
         var previousPosition = instance.currentPosition,
             delta = previousPosition - newPosition;
         $this.css("top", delta + "px");
+    } else {
+        $this.addClass("invisible");
     }
 
     Meteor.defer(function() {
         instance.currentPosition = newPosition;
-        $this.css("top", "0px");
+        $this.css("top", "0px").removeClass("invisible");
     });
 };
 
